@@ -7,6 +7,9 @@ on:
     # Run every day at 10:30am
     - cron: "30 10 * * *"
 
+permissions:
+  contents: write
+
 jobs:
   scrape-housing:
     runs-on: ubuntu-latest
