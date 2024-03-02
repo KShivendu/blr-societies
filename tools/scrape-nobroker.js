@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 // Utils:
 function parseVariable(content, regex) {
     const match = content.match(regex);
@@ -45,10 +47,19 @@ url.search = new URLSearchParams(queryParams);
     // TODO: Pagination and convert to iterator?
     const societies = await fetch(url).then(res => res.json());
 
+    // Create data directory and .csv file
+    // TODO: Make generating data cleaner
+    if (!fs.existsSync('data')) {
+        fs.mkdirSync('data');
+        fs.writeFileSync('data/nobroker.csv', 'price, area, lastUpdated, url\n');
+    }
+
     for (const [index, society] of societies.data.entries()) {
         const societyUrl = `https://www.nobroker.in/` + society.buildingPageUrl;
         console.log(`(${index + 1}/${societies.data.length}) Scraping ${societyUrl}`);
-        const htmlContent = await fetch(societyUrl).then(res => res.text()).catch(err => console.error(err));
+        const htmlContent = await fetch(societyUrl, {
+            signal: AbortSignal.timeout(10000), // 10s
+        }).then(res => res.text()).catch(err => console.error(err));
 
         if (!htmlContent) {
             console.error(`Error fetching HTML for ${societyUrl}`);
@@ -61,7 +72,18 @@ url.search = new URLSearchParams(queryParams);
 
         console.log(`Found ${rentProperties.length} rentals`);
         for (const property of rentProperties) {
-            console.log(`Rate: ${property.formattedPrice}; Area: ${property.propertySize} sqft; Last updated: ${new Date(property.lastUpdateDate).toISOString()}; Link: ${property.shortUrl}`);
+            const price = property.formattedPrice;
+            const area = property.propertySize;
+            const lastUpdated = new Date(property.lastUpdateDate).toISOString();
+            const url = property.shortUrl;
+
+            console.log(`Price: ${price}; Area: ${area} sqft; Last updated: ${lastUpdated}; Link: ${url}`);
+
+            fs.appendFile('data/nobroker.csv', `"${price}", "${area}","${lastUpdated}","${url}"\n`, (err) => {
+                if (err) {
+                    console.error('Error writing to file', err);
+                }
+            });
         }
         await new Promise(resolve => setTimeout(resolve, 500));
     }

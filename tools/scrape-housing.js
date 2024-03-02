@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 // Utils:
 function parseVariable(content, regex) {
     const match = content.match(regex);
@@ -45,6 +47,13 @@ async function findSocitiesWithLetter(indexLetter) {
     const indexLetter = `z`;
     const result = await findSocitiesWithLetter(indexLetter);
 
+    // Create data directory and .csv file
+    // TODO: Make generating data cleaner
+    if (!fs.existsSync('data')) {
+        fs.mkdirSync('data');
+        fs.writeFileSync('data/housing.csv', 'price, lastUpdated, url\n');
+    }
+
     for (const { rent: societyPath } of result.data.urlList.list) {
         const societyUrl = 'https://housing.com' + societyPath;
         console.log(`Scraping ${societyUrl}`);
@@ -66,7 +75,13 @@ async function findSocitiesWithLetter(indexLetter) {
             const price = listing.displayPrice.displayValue;
             const lastUpdated = listing.updatedAt ?? listing.postedDate;
             const url = 'https://housing.com' + listing.url;
-            console.log(`Price: ${price}; Last updated: ${lastUpdated}; URL: ${url}`)
+            console.log(`Price: ${price}; Last updated: ${lastUpdated}; URL: ${url}`);
+
+            fs.appendFile('data/housing.csv', `"${price}","${lastUpdated}","${url}"\n`, (err) => {
+                if (err) {
+                    console.error('Error writing to file', err);
+                }
+            });
         }
     }
 })();
