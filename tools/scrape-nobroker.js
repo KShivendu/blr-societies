@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 // Utils:
 function parseVariable(content, regex) {
     const match = content.match(regex);
