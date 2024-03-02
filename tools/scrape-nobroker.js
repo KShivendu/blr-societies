@@ -44,11 +44,10 @@ url.search = new URLSearchParams(queryParams);
 (async () => {
     // TODO: Pagination
     const societies = await fetch(url).then(res => res.json());
-    console.log(`Found ${societies.data.length} societies`);
 
-    for (const society of societies.data) {
+    for (const [index, society] of societies.data.entries()) {
         const societyUrl = `https://www.nobroker.in/` + society.buildingPageUrl;
-        console.log(`Scraping ${societyUrl}`);
+        console.log(`(${index + 1}/${societies.data.length}) Scraping ${societyUrl}`);
         const htmlContent = await fetch(societyUrl).then(res => res.text());
 
         const regex = /nb\.appState = (\{.*?\})(\n|;)/s;
