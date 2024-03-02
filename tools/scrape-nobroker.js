@@ -1,14 +1,63 @@
-const puppeteer = require('puppeteer');
+// Utils:
+function parseVariable(content, regex) {
+    const match = content.match(regex);
+    if (match && match[1]) {
+        const jsonString = match[1];
+        try {
+            const jsonData = JSON.parse(jsonString);
+            return jsonData;
+        } catch (e) {
+            console.error('Error parsing JSON string', e);
+        }
+    } else {
+        console.log('No matching data found');
+    }
+}
+
+function b64Encode(jsonData) {
+    const str = JSON.stringify(jsonData);
+    return Buffer.from(str).toString('base64');
+}
+
+// Code:
+const baseUrl = `https://www.nobroker.in/api/v3/multi/property/RENT/filter/building/properties`;
+const queryParams = {
+    pageNo: 1,
+    searchParam: b64Encode([
+        {
+            lat: 12.9699334403681,
+            lon: 77.5981770328522,
+            placeId: 'ChIJbU60yXAWrjsR4E9-UejD3_g', // No need to change
+            placeName: 'Bangalore',
+            showMap: false,
+        }
+    ]),
+    sharedAccomodation: 0,
+    radius: 2.0,
+    buildingType: 'GC', // AP,
+    city: 'bangalore',
+};
+
+const url = new URL(baseUrl);
+url.search = new URLSearchParams(queryParams);
 
 (async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto('https://news.ycombinator.com', {
-    waitUntil: 'networkidle2',
-  });
-  let pdf = await page.pdf({ path: 'test.pdf', format: 'a4' });
-  console.log('PDF generated');
-  console.log(pdf);
+    // TODO: Pagination
+    const societies = await fetch(url).then(res => res.json());
+    console.log(`Found ${societies.data.length} societies`);
 
-  await browser.close();
+    for (const society of societies.data) {
+        const societyUrl = `https://www.nobroker.in/` + society.buildingPageUrl;
+        console.log(`Scraping ${societyUrl}`);
+        const htmlContent = await fetch(societyUrl).then(res => res.text());
+
+        const regex = /nb\.appState = (\{.*?\})(\n|;)/s;
+        const jsonData = parseVariable(htmlContent, regex);
+        const rentProperties = jsonData.builderProjectReducer.builderOtherData.builderOtherInfo.rentProperties;
+
+        console.log(`Found ${rentProperties.length} rentals`);
+        for (const property of rentProperties) {
+            console.log(`Rate: ${property.formattedPrice}; Area: ${property.propertySize} sqft;`);
+        }
+    }
 })();
