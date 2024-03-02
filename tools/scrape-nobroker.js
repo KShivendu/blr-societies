@@ -42,7 +42,7 @@ const url = new URL(baseUrl);
 url.search = new URLSearchParams(queryParams);
 
 (async () => {
-    // TODO: Pagination
+    // TODO: Pagination and convert to iterator?
     const societies = await fetch(url).then(res => res.json());
 
     for (const [index, society] of societies.data.entries()) {
