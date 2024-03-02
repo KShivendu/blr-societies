@@ -4,8 +4,8 @@ on:
   repository_dispatch:
   workflow_dispatch:
   schedule:
-    # Run every 25 minutes
-    - cron: "25 * * * *"
+    # Run every day at 10:30am
+    - cron: "30 10 * * *"
 
 jobs:
   scrape-nobroker:
