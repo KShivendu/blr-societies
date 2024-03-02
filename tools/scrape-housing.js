@@ -48,9 +48,10 @@ async function findSocitiesWithLetter(indexLetter) {
     const result = await findSocitiesWithLetter(indexLetter);
 
     // Create data directory and .csv file
+    // TODO: Make generating data cleaner
     if (!fs.existsSync('data')) {
         fs.mkdirSync('data');
-        fs.writeFileSync('data/societies.csv', 'price, lastUpdated, url\n');
+        fs.writeFileSync('data/housing.csv', 'price, lastUpdated, url\n');
     }
 
     for (const { rent: societyPath } of result.data.urlList.list) {
@@ -76,8 +77,7 @@ async function findSocitiesWithLetter(indexLetter) {
             const url = 'https://housing.com' + listing.url;
             console.log(`Price: ${price}; Last updated: ${lastUpdated}; URL: ${url}`);
 
-            // Write to file:
-            fs.appendFile('data/societies.csv', `"${price}","${lastUpdated}","${url}"\n`, (err) => {
+            fs.appendFile('data/housing.csv', `"${price}","${lastUpdated}","${url}"\n`, (err) => {
                 if (err) {
                     console.error('Error writing to file', err);
                 }
