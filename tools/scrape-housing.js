@@ -42,7 +42,7 @@ async function findSocitiesWithLetter(indexLetter) {
 };
 
 (async () => {
-    const indexLetter = `a`;
+    const indexLetter = `z`;
     const result = await findSocitiesWithLetter(indexLetter);
 
     for (const { rent: societyPath } of result.data.urlList.list) {
