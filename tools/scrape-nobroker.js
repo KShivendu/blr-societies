@@ -57,7 +57,7 @@ url.search = new URLSearchParams(queryParams);
 
         console.log(`Found ${rentProperties.length} rentals`);
         for (const property of rentProperties) {
-            console.log(`Rate: ${property.formattedPrice}; Area: ${property.propertySize} sqft;`);
+            console.log(`Rate: ${property.formattedPrice}; Area: ${property.propertySize} sqft; Link: ${property.shortUrl}`);
         }
     }
 })();
