@@ -8,11 +8,11 @@ on:
     - cron: "25 * * * *"
 
 jobs:
-  collect-stats:
+  scrape-nobroker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: puppeteer-chrome
-        uses: tj-actions/puppeteer@v5.0.1
+      - uses: actions/setup-node@v4
         with:
-            files: tools/scrape-nobroker.js
+          node-version: '18'
+      - run: node tools/scrape-nobroker.js
