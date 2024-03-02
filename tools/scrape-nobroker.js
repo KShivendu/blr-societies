@@ -51,7 +51,7 @@ url.search = new URLSearchParams(queryParams);
         const htmlContent = await fetch(societyUrl).then(res => res.text()).catch(err => console.error(err));
 
         if (!htmlContent) {
-            console.error(`Error fetching HTML for ${htmlContent}`);
+            console.error(`Error fetching HTML for ${societyUrl}`);
             continue;
         }
 
