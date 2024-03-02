@@ -8,10 +8,11 @@ on:
     - cron: "25 * * * *"
 
 jobs:
-  collect-stats:
+  scrape-nobroker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
+      - run: node tools/scrape-nobroker.js
