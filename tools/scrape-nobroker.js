@@ -58,5 +58,6 @@ url.search = new URLSearchParams(queryParams);
         for (const property of rentProperties) {
             console.log(`Rate: ${property.formattedPrice}; Area: ${property.propertySize} sqft; Link: ${property.shortUrl}`);
         }
+        await new Promise(resolve => setTimeout(resolve, 1000));
     }
 })();
