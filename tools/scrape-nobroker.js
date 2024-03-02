@@ -61,7 +61,7 @@ url.search = new URLSearchParams(queryParams);
 
         console.log(`Found ${rentProperties.length} rentals`);
         for (const property of rentProperties) {
-            console.log(`Rate: ${property.formattedPrice}; Area: ${property.propertySize} sqft; Link: ${property.shortUrl}`);
+            console.log(`Rate: ${property.formattedPrice}; Area: ${property.propertySize} sqft; Last updated: ${new Date(property.lastUpdateDate).toISOString()}; Link: ${property.shortUrl}`);
         }
         await new Promise(resolve => setTimeout(resolve, 500));
     }

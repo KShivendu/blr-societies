@@ -61,8 +61,12 @@ async function findSocitiesWithLetter(indexLetter) {
         const jsonData = JSON.parse(parseVariable(htmlContent, regex));
 
         for (const [_, listing] of Object.entries(jsonData.searchResults.data)) {
-            console.log(`Price: ${listing.displayPrice.displayValue}; URL: ${listing.url}`)
+            // FIXME: I could find updatedAt in the sample file but never in the responses I'm getting from script
+            // Might consider removing it.
+            const price = listing.displayPrice.displayValue;
+            const lastUpdated = listing.updatedAt ?? listing.postedDate;
+            const url = 'https://housing.com' + listing.url;
+            console.log(`Price: ${price}; Last updated: ${lastUpdated}; URL: ${url}`)
         }
     }
-
 })();
