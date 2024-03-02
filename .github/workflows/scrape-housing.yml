@@ -24,6 +24,6 @@ jobs:
           REPO: self
           BRANCH: data
           FOLDER: data
-          CLEAR_GLOBS_FILE: '' # don't delete existing target dir
+          CLEAR_GLOBS_FILE: 'X' # don't delete existing target dir
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "Build: ${{ github.sha }} (${{ github.event_name }})"
