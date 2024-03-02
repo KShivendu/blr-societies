@@ -48,7 +48,12 @@ url.search = new URLSearchParams(queryParams);
     for (const [index, society] of societies.data.entries()) {
         const societyUrl = `https://www.nobroker.in/` + society.buildingPageUrl;
         console.log(`(${index + 1}/${societies.data.length}) Scraping ${societyUrl}`);
-        const htmlContent = await fetch(societyUrl).then(res => res.text());
+        const htmlContent = await fetch(societyUrl).then(res => res.text()).catch(err => console.error(err));
+
+        if (!htmlContent) {
+            console.error(`Error fetching HTML for ${htmlContent}`);
+            continue;
+        }
 
         const regex = /nb\.appState = (\{.*?\})(\n|;)/s;
         const jsonData = parseVariable(htmlContent, regex);
@@ -58,6 +63,6 @@ url.search = new URLSearchParams(queryParams);
         for (const property of rentProperties) {
             console.log(`Rate: ${property.formattedPrice}; Area: ${property.propertySize} sqft; Link: ${property.shortUrl}`);
         }
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
 })();
