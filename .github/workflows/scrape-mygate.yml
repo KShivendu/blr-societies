@@ -1,0 +1,24 @@
+name: Scrape MyGate
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    # Run every day at 10:30am
+    - cron: "30 10 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-mygate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - run: |
+            export MYGATE_USER_ID=${{ secrets.MYGATE_USER_ID }}
+            export MYGATE_ACCESS_KEY=${{ secrets.MYGATE_ACCESS_KEY }}
+            node tools/scrape-mygate.js
