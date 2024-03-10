@@ -23,4 +23,4 @@ jobs:
         with:
           commit_message: 'Build: ${{ github.sha }} (${{ github.event_name }})'
           branch: data
-          skip_checkout: true
+          push_options: '--force'
