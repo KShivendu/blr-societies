@@ -22,3 +22,6 @@ jobs:
             export MYGATE_USER_ID=${{ secrets.MYGATE_USER_ID }}
             export MYGATE_ACCESS_KEY=${{ secrets.MYGATE_ACCESS_KEY }}
             node tools/scrape-mygate.js
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Scrape MyGate: ${{ github.sha }}'
