@@ -18,10 +18,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - run: node tools/scrape-housing.js # generates data/housing.csv
-      - run: |
-          git add data/housing.csv
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
-          git commit -m 'Build: ${{ github.sha }} (${{ github.event_name }})'
-          git push origin data
+      - run: node tools/scrape-housing.js
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Build: ${{ github.sha }} (${{ github.event_name }})'
+          branch: data
+          file_pattern: 'data/housing.csv'
+        env:
+          ACTIONS_STEP_DEBUG: true
+
