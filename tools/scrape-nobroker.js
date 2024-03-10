@@ -51,8 +51,9 @@ url.search = new URLSearchParams(queryParams);
     // TODO: Make generating data cleaner
     if (!fs.existsSync('data')) {
         fs.mkdirSync('data');
-        fs.writeFileSync('data/nobroker.csv', 'price, area, lastUpdated, url\n');
     }
+
+    fs.writeFileSync('data/nobroker.csv', 'price, area, lastUpdated, url\n');
 
     for (const [index, society] of societies.data.entries()) {
         const societyUrl = `https://www.nobroker.in/` + society.buildingPageUrl;

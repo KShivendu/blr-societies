@@ -1,4 +1,4 @@
-
+const fs = require('fs');
 
 // Get from env
 const myGateUserId = process.env.MYGATE_USER_ID;
@@ -115,9 +115,17 @@ async function getPropertyListing(listingId) {
 
 (async () => {
     const results = await searchProperties();
+
+    if (!fs.existsSync('data')) {
+        fs.mkdirSync('data');
+    }
+    fs.writeFileSync('data/mygate.csv', 'title, locality, rent, url\n');
+
     for (const property of results.data) {
         const url = `https://classifieds.mygate.com/listing/${property.id}`;
         // const androidDeepLink = `https://mygate.in/dl/homes?homes_url=https://classifieds.mygate.com/post/${property.id}`;
         console.log(`Found ${property.title} in ${property.locality} for ${property.rent}; ${url}`);
+
+        fs.appendFileSync('data/mygate.csv', `${property.title}, ${property.locality}, ${property.rent}, ${url}\n`);
     }
 })();
