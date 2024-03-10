@@ -51,8 +51,8 @@ async function findSocitiesWithLetter(indexLetter) {
     // TODO: Make generating data cleaner
     if (!fs.existsSync('data')) {
         fs.mkdirSync('data');
-        fs.writeFileSync('data/housing.csv', 'price, lastUpdated, url\n');
     }
+    fs.writeFileSync('data/housing.csv', 'price, lastUpdated, url\n');
 
     for (const { rent: societyPath } of result.data.urlList.list) {
         const societyUrl = 'https://housing.com' + societyPath;
