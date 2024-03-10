@@ -23,5 +23,4 @@ jobs:
         with:
           commit_message: 'Build: ${{ github.sha }} (${{ github.event_name }})'
           branch: data
-          skip_dirty_check: true
           skip_checkout: true
