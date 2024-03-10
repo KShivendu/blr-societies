@@ -21,5 +21,7 @@ jobs:
       - run: node tools/scrape-housing.js # generates data/housing.csv
       - run: |
           git add data/housing.csv
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
           git commit -m 'Build: ${{ github.sha }} (${{ github.event_name }})'
           git push origin data
