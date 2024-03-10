@@ -18,12 +18,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - run: node tools/scrape-housing.js
-      - uses: actions/checkout@v3
-        with:
-          ref: data
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'Build: ${{ github.sha }} (${{ github.event_name }})'
-          branch: data
-
+      - run: node tools/scrape-housing.js # generates data/housing.csv
+      - run: |
+          git add data/housing.csv
+          git commit -m 'Build: ${{ github.sha }} (${{ github.event_name }})'
+          git push origin data
