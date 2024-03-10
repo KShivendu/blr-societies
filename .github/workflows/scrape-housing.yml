@@ -21,9 +21,6 @@ jobs:
       - run: node tools/scrape-housing.js
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'Build: ${{ github.sha }} (${{ github.event_name }})'
-          branch: data
+          commit_message: 'Scrape housing: ${{ github.sha }}'
           file_pattern: 'data/housing.csv'
-        env:
-          ACTIONS_STEP_DEBUG: true
 
