@@ -125,7 +125,13 @@ async function getPropertyListing(listingId) {
         const url = `https://classifieds.mygate.com/listing/${property.id}`;
         // const androidDeepLink = `https://mygate.in/dl/homes?homes_url=https://classifieds.mygate.com/post/${property.id}`;
         console.log(`Found ${property.title} in ${property.locality} for ${property.rent}; ${url}`);
+<<<<<<< Updated upstream
 
         fs.appendFileSync('data/mygate.csv', `${property.title}, ${property.locality}, ${property.rent}, ${url}\n`);
+||||||| constructed merge base
+=======
+
+        fs.appendFileSync('data/mygate.csv', `"${property.title}", "${property.locality}", "${property.rent}", "${url}"\n`);
+>>>>>>> Stashed changes
     }
 })();
