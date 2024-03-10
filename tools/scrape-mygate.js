@@ -126,6 +126,6 @@ async function getPropertyListing(listingId) {
         // const androidDeepLink = `https://mygate.in/dl/homes?homes_url=https://classifieds.mygate.com/post/${property.id}`;
         console.log(`Found ${property.title} in ${property.locality} for ${property.rent}; ${url}`);
 
-        fs.appendFileSync('data/mygate.csv', `${property.title}, ${property.locality}, ${property.rent}, ${url}\n`);
+        fs.appendFileSync('data/mygate.csv', `"${property.title}", "${property.locality}", "${property.rent}", "${url}"\n`);
     }
 })();
