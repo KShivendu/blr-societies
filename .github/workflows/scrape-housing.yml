@@ -19,10 +19,11 @@ jobs:
         with:
           node-version: '18'
       - run: node tools/scrape-housing.js
+      - uses: actions/checkout@v3
+        with:
+          ref: data
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Build: ${{ github.sha }} (${{ github.event_name }})'
           branch: data
-          skip_checkout: true
-          push_options: '--force'
 
