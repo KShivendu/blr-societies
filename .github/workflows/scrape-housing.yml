@@ -19,7 +19,11 @@ jobs:
         with:
           node-version: '18'
       - run: node tools/scrape-housing.js
-      - uses: actions/upload-artifact@v4
+      - uses: softprops/action-gh-release@v1
+        name: Release with Notes
         with:
-          name: my-artifact
-          path: data/housing.csv
+          files: |
+            data/housing.csv
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
