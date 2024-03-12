@@ -73,14 +73,19 @@ url.search = new URLSearchParams(queryParams);
 
         console.log(`Found ${rentProperties.length} rentals`);
         for (const property of rentProperties) {
-            const price = property.formattedPrice;
+            let price = -1;
+            try {
+                price = parseInt(property.formattedPrice.replace('₹', '').replace(',', ''));
+            } catch (e) {
+                console.error('Error parsing price', e);
+            }
             const area = property.propertySize;
             const lastUpdated = new Date(property.lastUpdateDate).toISOString();
             const url = property.shortUrl;
 
             console.log(`Price: ${price}; Area: ${area} sqft; Last updated: ${lastUpdated}; Link: ${url}`);
 
-            fs.appendFile('data/nobroker.csv', `"${price}", "${area}","${lastUpdated}","${url}"\n`, (err) => {
+            fs.appendFile('data/nobroker.csv', `${price}, "${area}","${lastUpdated}","${url}"\n`, (err) => {
                 if (err) {
                     console.error('Error writing to file', err);
                 }
