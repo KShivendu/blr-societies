@@ -54,7 +54,7 @@ async function searchProperties() {
                 "limit": 150, // Limited to 150 from server
                 "page": 1 // Change this
             },
-            "query": `query homesSearchFilter($dynamicFilters: [filters], $sortBy: [sortByInput], $page: Int, $limit: Int) {\n  homesSearchFilter(dynamicFilters: $dynamicFilters, sortBy: $sortBy, page: $page, limit: $limit) {\n    data {\n      postType\n      city\n      id\n      userId\n      categoryId\n      flatType\n      hasBookmarked\n      locality\n      title\n      subtitle\n      area {\n        value\n        unit\n      }\n      rent\n      maintenanceCost\n      furnishingStatus\n      tags {\n        id\n        name\n        type\n        colour\n        icon\n      }\n      image {\n        url\n        largeUrl\n      }\n      amount {\n        value\n        unit\n      }\n      location {\n        lat\n        lng\n      }\n      gallery {\n        url\n        largeUrl\n      }\n      searchDistance {\n        location {\n          lat\n          lng\n        }\n        distance\n      }\n    }\n    total\n    searchId\n  }\n}\n`
+            "query": `query homesSearchFilter($dynamicFilters: [filters], $sortBy: [sortByInput], $page: Int, $limit: Int) {\n  homesSearchFilter(dynamicFilters: $dynamicFilters, sortBy: $sortBy, page: $page, limit: $limit) {\n    data {\n      postType\n  createdAt\n  updatedAt\n  city\n      id\n      userId\n      categoryId\n      flatType\n      hasBookmarked\n      locality\n      title\n      subtitle\n      area {\n        value\n        unit\n      }\n      rent\n      maintenanceCost\n      furnishingStatus\n      tags {\n        id\n        name\n        type\n        colour\n        icon\n      }\n      image {\n        url\n        largeUrl\n      }\n      amount {\n        value\n        unit\n      }\n      location {\n        lat\n        lng\n      }\n      gallery {\n        url\n        largeUrl\n      }\n      searchDistance {\n        location {\n          lat\n          lng\n        }\n        distance\n      }\n    }\n    total\n    searchId\n  }\n}\n`
         })
     };
 
@@ -119,13 +119,13 @@ async function getPropertyListing(listingId) {
     if (!fs.existsSync('data')) {
         fs.mkdirSync('data');
     }
-    fs.writeFileSync('data/mygate.csv', 'title, locality, rent, url\n');
+    fs.writeFileSync('data/mygate.csv', 'updatedAt, title, locality, rent, url\n');
 
     for (const property of results.data) {
         const url = `https://classifieds.mygate.com/listing/${property.id}`;
         // const androidDeepLink = `https://mygate.in/dl/homes?homes_url=https://classifieds.mygate.com/post/${property.id}`;
         console.log(`Found ${property.title} in ${property.locality} for ${property.rent}; ${url}`);
 
-        fs.appendFileSync('data/mygate.csv', `"${property.title}", "${property.locality}", ${property.rent}, "${url}"\n`);
+        fs.appendFileSync('data/mygate.csv', `"${property.updatedAt}", "${property.title}", "${property.locality}", ${property.rent}, "${url}"\n`);
     }
 })();
