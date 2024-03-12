@@ -53,7 +53,7 @@ url.search = new URLSearchParams(queryParams);
         fs.mkdirSync('data');
     }
 
-    fs.writeFileSync('data/nobroker.csv', 'price, area, lastUpdated, url\n');
+    fs.writeFileSync('data/nobroker.csv', 'rent, area, lastUpdated, url\n');
 
     for (const [index, society] of societies.data.entries()) {
         const societyUrl = `https://www.nobroker.in/` + society.buildingPageUrl;
@@ -73,9 +73,9 @@ url.search = new URLSearchParams(queryParams);
 
         console.log(`Found ${rentProperties.length} rentals`);
         for (const property of rentProperties) {
-            let price = -1;
+            let rent = -1;
             try {
-                price = parseInt(property.formattedPrice.replace('₹', '').replace(',', ''));
+                rent = parseInt(property.formattedPrice.replace('₹', '').replace(',', ''));
             } catch (e) {
                 console.error('Error parsing price', e);
             }
@@ -83,9 +83,9 @@ url.search = new URLSearchParams(queryParams);
             const lastUpdated = new Date(property.lastUpdateDate).toISOString();
             const url = property.shortUrl;
 
-            console.log(`Price: ${price}; Area: ${area} sqft; Last updated: ${lastUpdated}; Link: ${url}`);
+            console.log(`Rent: ${rent}; Area: ${area} sqft; Last updated: ${lastUpdated}; Link: ${url}`);
 
-            fs.appendFile('data/nobroker.csv', `${price}, "${area}","${lastUpdated}","${url}"\n`, (err) => {
+            fs.appendFile('data/nobroker.csv', `${rent}, "${area}","${lastUpdated}","${url}"\n`, (err) => {
                 if (err) {
                     console.error('Error writing to file', err);
                 }

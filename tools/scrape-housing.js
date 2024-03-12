@@ -52,7 +52,7 @@ async function findSocitiesWithLetter(indexLetter) {
     if (!fs.existsSync('data')) {
         fs.mkdirSync('data');
     }
-    fs.writeFileSync('data/housing.csv', 'price, lastUpdated, url\n');
+    fs.writeFileSync('data/housing.csv', 'rent, lastUpdated, url\n');
 
     for (const { rent: societyPath } of result.data.urlList.list) {
         const societyUrl = 'https://housing.com' + societyPath;
@@ -72,17 +72,17 @@ async function findSocitiesWithLetter(indexLetter) {
         for (const [_, listing] of Object.entries(jsonData.searchResults.data)) {
             // FIXME: I could find updatedAt in the sample file but never in the responses I'm getting from script
             // Might consider removing it.
-            let price = -1;
+            let rent = -1;
             try {
-                price = parseInt(listing.displayPrice.displayValue.replace('₹', '').replace(',', ''));
+                rent = parseInt(listing.displayPrice.displayValue.replace('₹', '').replace(',', ''));
             } catch (e) {
                 console.error('Error parsing price', e);
             }
             const lastUpdated = listing.updatedAt ?? listing.postedDate;
             const url = 'https://housing.com' + listing.url;
-            console.log(`Price: ${price}; Last updated: ${lastUpdated}; URL: ${url}`);
+            console.log(`Price: ${rent}; Last updated: ${lastUpdated}; URL: ${url}`);
 
-            fs.appendFile('data/housing.csv', `"${price}","${lastUpdated}","${url}"\n`, (err) => {
+            fs.appendFile('data/housing.csv', `"${rent}","${lastUpdated}","${url}"\n`, (err) => {
                 if (err) {
                     console.error('Error writing to file', err);
                 }
