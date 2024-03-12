@@ -119,13 +119,13 @@ async function getPropertyListing(listingId) {
     if (!fs.existsSync('data')) {
         fs.mkdirSync('data');
     }
-    fs.writeFileSync('data/mygate.csv', 'updatedAt, title, locality, rent, url\n');
+    fs.writeFileSync('data/mygate.csv', 'updatedAt; title; locality; rent; url\n');
 
     for (const property of results.data) {
         const url = `https://classifieds.mygate.com/listing/${property.id}`;
         // const androidDeepLink = `https://mygate.in/dl/homes?homes_url=https://classifieds.mygate.com/post/${property.id}`;
         console.log(`Found ${property.title} in ${property.locality} for ${property.rent}; ${url}`);
 
-        fs.appendFileSync('data/mygate.csv', `"${property.updatedAt}", "${property.title}", "${property.locality}", ${property.rent}, "${url}"\n`);
+        fs.appendFileSync('data/mygate.csv', `"${property.updatedAt}"; "${property.title}"; "${property.locality}"; ${property.rent}; "${url}"\n`);
     }
 })();
